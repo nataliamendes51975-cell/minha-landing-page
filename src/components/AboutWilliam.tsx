@@ -23,7 +23,7 @@ export const AboutWilliam: React.FC<AboutWilliamProps> = ({
   };
 
   const portraitSrc =
-    customPhotoUrl || '/src/assets/images/william_consultant_portrait_1793294764647.jpg';
+    customPhotoUrl || '/images/william-consultant-portrait.jpg';
 
   return (
     <section id="sobre" className="py-20 md:py-28 bg-[#F4F6F7] text-[#15191D]">

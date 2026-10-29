@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({
               {/* Large Architectural Glass Photo */}
               <div className="relative rounded-2xl overflow-hidden border border-white/15 shadow-2xl aspect-16/11 bg-slate-900">
                 <img
-                  src="/src/assets/images/hero_architectural_glass_1793294763460.jpg"
+                  src="/images/hero-architectural-glass.jpg"
                   alt="Instalações arquitetônicas em vidro VIDRONOX"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"
