@@ -1,14 +1,12 @@
 import React from 'react';
-import { ArrowRight, Camera } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface HeroProps {
   onQuoteClick: () => void;
-  onSendPhotosClick: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   onQuoteClick,
-  onSendPhotosClick,
 }) => {
 
   return (
@@ -42,14 +40,6 @@ export const Hero: React.FC<HeroProps> = ({
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <button
-                type="button"
-                onClick={onSendPhotosClick}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-bold text-white bg-[#0F223D] hover:bg-[#153158] border-2 border-[#0066FF] rounded-md transition-all shadow-sm hover:scale-[1.02]"
-              >
-                <Camera className="w-4 h-4 text-[#38BDF8]" />
-                <span>Enviar fotos e medidas</span>
-              </button>
             </div>
           </div>
 
