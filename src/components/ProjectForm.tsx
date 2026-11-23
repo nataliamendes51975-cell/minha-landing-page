@@ -1,9 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Send,
-  UploadCloud,
   X,
-  Camera,
   CheckCircle,
   Copy,
   AlertCircle,
@@ -31,7 +29,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
   const [showModal, setShowModal] = useState(false);
   const [formattedMessage, setFormattedMessage] = useState('');
   const [copied, setCopied] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (selectedServicePreset) {
@@ -65,31 +62,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
     }
   };
 
-  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const newFiles = Array.from(e.target.files);
-    const slots = 5 - formData.photos.length;
-    if (slots <= 0) return;
-
-    const added = newFiles.slice(0, slots).map((file) => ({
-      name: file.name,
-      size: file.size,
-      previewUrl: URL.createObjectURL(file),
-    }));
-
-    setFormData((prev) => ({ ...prev, photos: [...prev.photos, ...added] }));
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
-
-  const handleRemovePhoto = (index: number) => {
-    setFormData((prev) => {
-      const copy = [...prev.photos];
-      URL.revokeObjectURL(copy[index].previewUrl);
-      copy.splice(index, 1);
-      return { ...prev, photos: copy };
-    });
-  };
-
   const validate = () => {
     const errors: Record<string, string> = {};
     if (!formData.fullName.trim()) errors.fullName = 'Informe seu nome';
@@ -109,11 +81,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
 
     const widthText = formData.widthCm ? `${formData.widthCm} cm` : 'A conferir';
     const heightText = formData.heightCm ? `${formData.heightCm} cm` : 'A conferir';
-    const photoCountText =
-      formData.photos.length > 0
-        ? `${formData.photos.length} foto(s) anexada(s) nesta conversa`
-        : 'Nenhuma foto inicial';
-
     const msg = [
       '👋 *SOLICITAÇÃO DE ORÇAMENTO*',
       `👤 *Cliente:* ${formData.fullName}`,
@@ -124,7 +91,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
       `📏 *Altura estimada:* ${heightText}`,
       `🔢 *Quantidade:* ${formData.piecesCount || '1'}`,
       formData.description ? `📝 *Observações:* ${formData.description}` : '',
-      `📷 *Fotos:* ${photoCountText}`,
       '_Enviado via William Medinas | Consultor VIDRONOX_',
     ]
       .filter(Boolean)
@@ -161,7 +127,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
             Envie seu projeto
           </h2>
           <p className="mt-2 text-sm sm:text-base text-slate-600">
-            Informe medidas aproximadas e envie fotos para avaliação preliminar.
+            Informe as medidas aproximadas e os detalhes do projeto para avaliação preliminar.
           </p>
         </div>
 
@@ -324,55 +290,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
             />
           </div>
 
-          {/* Row 5: Photo Upload (up to 5) */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                Fotos do Vão (Até 5)
-              </label>
-              <span className="text-xs font-mono text-slate-500">
-                {formData.photos.length}/5 selecionadas
-              </span>
-            </div>
-
-            {formData.photos.length < 5 && (
-              <div
-                onClick={() => fileInputRef.current?.click()}
-                className="cursor-pointer border-2 border-dashed border-slate-300 hover:border-[#244C5A] bg-[#F4F6F7] rounded-xl p-4 text-center transition-colors"
-              >
-                <UploadCloud className="w-5 h-5 mx-auto text-slate-400" />
-                <p className="text-xs font-semibold text-slate-700 mt-1">
-                  Clique para anexar fotos do vão
-                </p>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handlePhotoSelect}
-                  className="hidden"
-                />
-              </div>
-            )}
-
-            {formData.photos.length > 0 && (
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-3">
-                {formData.photos.map((photo, idx) => (
-                  <div key={idx} className="relative rounded-lg overflow-hidden aspect-square border border-slate-200 bg-slate-100">
-                    <img src={photo.previewUrl} alt="Prévia" className="w-full h-full object-cover" />
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePhoto(idx)}
-                      className="absolute top-1 right-1 bg-black/70 hover:bg-rose-600 text-white p-1 rounded-full"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Notice */}
           <div className="flex items-start gap-2 text-xs text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-200">
             <AlertCircle className="w-4 h-4 text-[#244C5A] shrink-0 mt-0.5" />
@@ -420,12 +337,6 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ selectedServicePreset 
               <div className="bg-slate-50 p-3 rounded-lg text-xs font-mono text-slate-800 max-h-40 overflow-y-auto whitespace-pre-wrap">
                 {formattedMessage}
               </div>
-
-              {formData.photos.length > 0 && (
-                <p className="text-xs text-amber-800 bg-amber-50 p-2.5 rounded-lg border border-amber-200">
-                  📷 Você selecionou {formData.photos.length} foto(s). Anexe-as na conversa do WhatsApp para avaliação técnica imediata.
-                </p>
-              )}
 
               <div className="flex gap-2 pt-2">
                 <button
