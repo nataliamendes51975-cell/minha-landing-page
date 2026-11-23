@@ -36,7 +36,7 @@ export default function App() {
         {/* Section 1: Início (Hero) */}
         <Hero
           onQuoteClick={() => scrollToForm()}
-          onSendPhotosClick={() => scrollToForm()}
+         
         />
 
         {/* Section 2: Sobre */}
