@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { AboutWilliam } from './components/AboutWilliam';
@@ -16,43 +16,6 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 export default function App() {
   const [selectedService, setSelectedService] = useState<string>('Boxes');
-  const [customPhotoUrl, setCustomPhotoUrl] = useState<string | null>(null);
-
-  // Restore persisted custom photo from localStorage
-  useEffect(() => {
-    try {
-      const savedPhoto = localStorage.getItem('william_custom_photo');
-      if (savedPhoto) {
-        setCustomPhotoUrl(savedPhoto);
-      }
-    } catch {
-      // Ignore storage errors
-    }
-  }, []);
-
-  const handlePhotoUpload = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      setCustomPhotoUrl(result);
-      try {
-        localStorage.setItem('william_custom_photo', result);
-      } catch {
-        // Storage quota exceeded
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleResetPhoto = () => {
-    setCustomPhotoUrl(null);
-    try {
-      localStorage.removeItem('william_custom_photo');
-    } catch {
-      // Ignore
-    }
-  };
-
   const scrollToForm = (serviceName?: string) => {
     if (serviceName) {
       setSelectedService(serviceName);
@@ -77,12 +40,7 @@ export default function App() {
         />
 
         {/* Section 2: Sobre */}
-        <AboutWilliam
-          customPhotoUrl={customPhotoUrl}
-          onPhotoUpload={handlePhotoUpload}
-          onResetPhoto={handleResetPhoto}
-          onQuoteClick={() => scrollToForm()}
-        />
+        <AboutWilliam onQuoteClick={() => scrollToForm()} />
 
         {/* Section 3: Soluções (6 Categorias Principais, Sem Duplicações) */}
         <SolutionsSection
