@@ -1,29 +1,14 @@
-import React, { useRef } from 'react';
-import { Ruler, ShieldCheck, FileCheck, Camera, Upload, RotateCcw } from 'lucide-react';
+import React from 'react';
+import { Ruler, ShieldCheck, FileCheck } from 'lucide-react';
 
 interface AboutWilliamProps {
-  customPhotoUrl: string | null;
-  onPhotoUpload: (file: File) => void;
-  onResetPhoto: () => void;
   onQuoteClick: () => void;
 }
 
 export const AboutWilliam: React.FC<AboutWilliamProps> = ({
-  customPhotoUrl,
-  onPhotoUpload,
-  onResetPhoto,
   onQuoteClick,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      onPhotoUpload(e.target.files[0]);
-    }
-  };
-
-  const portraitSrc =
-    customPhotoUrl || '/images/william-consultant-portrait.jpg';
+  const portraitSrc = '/images/WhatsApp%20Image%202026-11-23%20at%2018.20.03.jpeg';
 
   return (
     <section id="sobre" className="py-20 md:py-28 bg-[#F4F6F7] text-[#15191D]">
@@ -46,34 +31,6 @@ export const AboutWilliam: React.FC<AboutWilliamProps> = ({
                 </div>
               </div>
 
-              {/* Photo customization toggle */}
-              <div className="mt-2.5 flex items-center justify-between text-xs text-slate-500 px-0.5">
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="inline-flex items-center gap-1.5 hover:text-[#244C5A] font-medium transition-colors text-[11px]"
-                >
-                  <Upload className="w-3 h-3" />
-                  <span>{customPhotoUrl ? 'Trocar Foto Real' : 'Carregar Foto Real'}</span>
-                </button>
-                {customPhotoUrl && (
-                  <button
-                    type="button"
-                    onClick={onResetPhoto}
-                    className="text-rose-600 hover:text-rose-700 flex items-center gap-1 font-medium text-[11px]"
-                  >
-                    <RotateCcw className="w-3 h-3" />
-                    <span>Restaurar</span>
-                  </button>
-                )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </div>
             </div>
           </div>
 
